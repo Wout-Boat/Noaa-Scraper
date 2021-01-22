@@ -21,8 +21,6 @@ for part in url_split[:-1]:
 file_name_split = start_file_name.split("_")
 number_code = int(file_name_split[0])
 
-# Need to write some code that then re-creates the url given the components
-# and the the number_code that was pulled from the url.
 images = 0
 skips = 0
 
@@ -36,9 +34,7 @@ while images < 250:
 
     working_url = url_rest + str(number_code) + "_" + file_name_split[1]
 
-    # The part where the code doesn't work
     r = requests.get(noaa_url, stream=True)
-    # End part where the code doesn't work
 
     if r.status_code == 200:
         skips = 0
