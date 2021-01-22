@@ -26,7 +26,8 @@ file_name = str(number_code) + "_" + file_name_split[1]
 print(url_rest)
 print(number_code)
 print(file_name)
-
+# Need to write some code that then re-creates the url given the components
+# and the the number_code that was pulled from the url.
 images = 0
 skips = 0
 while images < 250:
