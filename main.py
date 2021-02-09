@@ -52,7 +52,7 @@ while images < 250:
     working_url = url_rest + str(number_code) + "_" + file_name_split[1]
 
     # The request to the url
-    r = requests.get(noaa_url, stream=True)
+    r = requests.get(working_url, stream=True)
 
     # If file is found
     if r.status_code == 200:
