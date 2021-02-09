@@ -46,6 +46,8 @@ if not os.path.exists(img_path):
     os.makedirs(img_path)
 
 # Main downloading loop start
+# TODO: need to make the loop not go off of
+#  images but to go just based off of skips.
 while images < 250:
 
     # creates the download url for this current loop with the current
@@ -63,32 +65,39 @@ while images < 250:
         r.raw.decode_content = True
 
         # Saves image to path
-        with open(img_path + str(images) + ".jpg", 'a+b') as f:
+        # zfill(5) adds leading zeros to the numbers, this prevents opencv from
+        # ordering the images incorrectly.
+        with open(img_path + str(images).zfill(5) + ".jpg", 'a+b') as f:
+            #
             shutil.copyfileobj(r.raw, f)
         print("Downloaded number " + str(images))
         images += 1
 
     # If file is not found
     if r.status_code != 200:
-        print("Skipping " + noaa_url)
+
+        # Add one to skips
         skips += 1
 
         # If we skip an image too many times kill the loop
         if skips > 15:
             images += 1000
 
-    # The images are only saved in icrements of 5?
+    # The images are only saved in increments of 5?
     # This skips to the next image in sequence.
     number_code += 5
 
+# TODO: - Need to add coments to the following portion.
+#   - Also need to add a loop here that changes the size of the frames
+#   so that they are 1920x1080
 print("Done downloading files")
 
-video_name = "initialoutput.avi"
+video_name = "output.avi"
 imgs = [img for img in os.listdir(img_path) if img.endswith(".jpg")]
 frame = cv2.imread(os.path.join(img_path, imgs[0]))
 height, width, layers = frame.shape
 
-video = cv2.VideoWriter(video_name, 0, 1, (width, height), fps=10)
+video = cv2.VideoWriter(video_name, 0, 10, (width, height))
 
 for image in imgs:
     video.write(cv2.imread(os.path.join(img_path, image)))
