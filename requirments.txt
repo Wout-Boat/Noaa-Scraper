@@ -1,7 +1,0 @@
-certifi
-chardet
-idna
-pip
-requests
-setuptools
-urllib3

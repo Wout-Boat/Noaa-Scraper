@@ -8,9 +8,10 @@ https://www.star.nesdis.noaa.gov/goes/index.php
 import requests
 import shutil
 import os
+import cv2
 
 # Change this line only
-noaa_url = "https://cdn.star.nesdis.noaa.gov/GOES16/ABI/SECTOR/nr/GEOCOLOR/20210211901_GOES16-ABI-nr-GEOCOLOR-2400x2400.jpg"
+noaa_url = "https://cdn.star.nesdis.noaa.gov/GOES16/ABI/SECTOR/nr/GEOCOLOR/20210390641_GOES16-ABI-nr-GEOCOLOR-2400x2400.jpg"
 
 # This witchcraft uses Python's insane list splitting tools to select the
 # filename in the URL and set it to start_file_name
@@ -38,11 +39,11 @@ skips = 0
 # Gets the running directory for the script
 cwd = os.getcwd()
 # Adds /img/ to the end of the running directory
-path = cwd + '/img/'
+img_path = cwd + '/img/'
 
 # Creates the /img/ directory if it doesn't exist
-if not os.path.exists(path):
-    os.makedirs(path)
+if not os.path.exists(img_path):
+    os.makedirs(img_path)
 
 # Main downloading loop start
 while images < 250:
@@ -62,7 +63,7 @@ while images < 250:
         r.raw.decode_content = True
 
         # Saves image to path
-        with open(path + str(images) + ".jpg", 'a+b') as f:
+        with open(img_path + str(images) + ".jpg", 'a+b') as f:
             shutil.copyfileobj(r.raw, f)
         print("Downloaded number " + str(images))
         images += 1
@@ -81,3 +82,16 @@ while images < 250:
     number_code += 5
 
 print("Done downloading files")
+
+video_name = "initialoutput.avi"
+imgs = [img for img in os.listdir(img_path) if img.endswith(".jpg")]
+frame = cv2.imread(os.path.join(img_path, imgs[0]))
+height, width, layers = frame.shape
+
+video = cv2.VideoWriter(video_name, 0, 1, (width, height), fps=10)
+
+for image in imgs:
+    video.write(cv2.imread(os.path.join(img_path, image)))
+
+cv2.destroyAllWindows()
+video.release()
