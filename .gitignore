@@ -1,4 +1,5 @@
 /.idea/
 /venv/
 /img/
-output.avi
+tmp_output.avi
+output.mp4
