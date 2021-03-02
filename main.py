@@ -126,15 +126,9 @@ print("It's out of the oven, watch out it's hot!")
 
 # Convert video
 # TODO: Add comments to following section
-print("Converting video...")
 
-stream = ffmpeg.input("output.avi")
-stream = ffmpeg.output(stream, 'output.mp4')
-ffmpeg.run(stream)
-
-print("Finished converting, cleaning up after myself...")
+print("Cleaning up after myself...")
 os.remove(img_path)
-os.remove("output.avi")
 
 print("All done!")
-print("Your video is in " + cwd + ". As output.mp4!")
+print("Your video is in " + cwd + ". As output.avi!")
